@@ -26,11 +26,7 @@ class Bank_System():
          
 
     def add_new_customer(self):
-        self.name = input('Enter your name: ').lower()
-        self.account_id = input('Enter your account id (from 1006 - 1100): ')
-        if account_id < 1006 or account_id > 1100:
-            print('Please enter a valid account id')
-            
+        self.name = input('Enter your name: ').lower()     
         inp = input('Do you have a cheacking account? ').lower()
         inp2 = input('Do you have a savings account? ').lower()
         if inp == 'yes':
@@ -51,19 +47,15 @@ class Bank_System():
         return self.name, self.cheacking_account, self.savings_account
         
         
-    def account_id(self):
+    def account_idinity(self):
         ins = randint(10006, 11000)
-        inp = input('Enter your account id: ')
         idlist = []
-        if inp == ins:
-            if ins not in idlist:
-                idlist.append(ins)
-        else:
-            print('Please enter a valid account id')
+        if ins not in idlist:
+            idlist.append(ins)
         with open('bank.csv', 'a') as file:
             file = csv.writer(file)
             file.writerow([ins])
-        return ins
+        return idlist
 
         
         

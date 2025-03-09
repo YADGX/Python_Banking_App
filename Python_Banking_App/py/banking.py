@@ -61,12 +61,32 @@ class Bank_System():
         self.balance = balance
         inp = input('How much would you like to deposit? ')
         self.balance += int(inp)
+        with open('bank.csv', 'a') as file:
+            file = csv.writer(file)
+            file.writerow([self.balance])
         return self.balance
 
 
 
-    def transfer_money():
-        pass
+    def transfer_money(self):
+        inp = input('How much would you like to transfer? ')
+        inp2 = input('What account would you like to transfer to? ')
+        if inp2 == 'cheacking account':
+            self.cheacking_account += int(inp)
+        else:
+            self.savings_account += int(inp)
+        return self.cheacking_account, self.savings_account
+    
+    def check_balance(self):
+        inp = input('What account would you like to check the balance of? ')
+        if inp == 'cheacking account':
+            print(self.cheacking_account)
+        else:
+            print(self.savings_account)
+        
+       
+
+    
 
 
     def overdraft():

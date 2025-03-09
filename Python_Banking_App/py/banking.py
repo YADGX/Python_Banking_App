@@ -10,14 +10,16 @@
 
 
 import csv
+from random import randint
 
 class Bank_System():
-    def __init__(self, name, cheacking_account = [], savings_account = [], balance = 0):
+    def __init__(self, name, account_id ,cheacking_account = [], savings_account = [], balance = 0):
         with open('./../bank.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 print(row)
         self.name = name
+        self.account_id = account_id
         self.cheacking_account = cheacking_account
         self.savings_account = savings_account
         self.balance = balance
@@ -25,6 +27,10 @@ class Bank_System():
 
     def add_new_customer(self):
         self.name = input('Enter your name: ').lower()
+        self.account_id = input('Enter your account id (from 1006 - 1100): ')
+        if account_id < 1006 or account_id > 1100:
+            print('Please enter a valid account id')
+            
         inp = input('Do you have a cheacking account? ').lower()
         inp2 = input('Do you have a savings account? ').lower()
         if inp == 'yes':
@@ -44,6 +50,21 @@ class Bank_System():
                 writer.writeheader()
         return self.name, self.cheacking_account, self.savings_account
         
+        
+    def account_id(self):
+        ins = randint(10006, 11000)
+        inp = input('Enter your account id: ')
+        idlist = []
+        if inp == ins:
+            if ins not in idlist:
+                idlist.append(ins)
+        else:
+            print('Please enter a valid account id')
+        with open('bank.csv', 'a') as file:
+            file = csv.writer(file)
+            file.writerow([ins])
+        return ins
+
         
         
         

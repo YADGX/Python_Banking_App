@@ -31,7 +31,7 @@ class User:
     def generate_unique_id(self):
         while True:
             new_id = randint(10006, 11000)
-            if new_id not in self.account_ids:
+            if new_id not in self.account_id:
                 return new_id
                  
     def create_bank_account(self):
@@ -88,9 +88,6 @@ class User:
             ])
         print("Account information saved to CSV.")
         
-
-User().create_bank_account()
-User().ckecking_saving_account()
  
  
  

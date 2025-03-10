@@ -1,5 +1,5 @@
 #   PSEUDOCODE HERE
-# -
+# - 
 # -
 # -
 # -
@@ -15,18 +15,30 @@ import getpass
 
 class User:
     def __init__(self):
+        self.accounts =[]
         self.password = []
         self.name = []
         self.account_id = []
         self.checking_account = []
         self.savings_account = []
         self.balance = []
+        self.load_csv()
     
-    
+    def load_csv(self):
         with open('./../bank.csv', 'r') as file:
             reader = csv.DictReader(file)
             for row in reader:
                 print(row)
+                
+                
+    def save_to_csv(self):
+        with open('./../bank.csv', 'a', newline='') as file:
+            fieldnames = ['account_id', 'name', 'password', 'checking_account', 'savings_account', 'balance']
+            writer = csv.DictWriter(file, fieldnames=fieldnames)
+            writer.writeheader()
+            for i in self.accounts:
+                writer.writerow(i)
+        print("Account information saved to CSV.")
     
     def generate_unique_id(self):
         while True:
@@ -79,18 +91,7 @@ class User:
         # self.save_to_csv()
         return self.checking_account, self.savings_account, self.password
     
-    def save_to_csv(self):
-        with open('./../bank.csv', 'a', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow([
-                self.account_id,
-                self.name,
-                self.password,
-                self.checking_account,
-                self.savings_account,
-                self.balance
-            ])
-        print("Account information saved to CSV.")
+    
         
  
  

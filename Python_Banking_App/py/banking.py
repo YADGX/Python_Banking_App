@@ -12,101 +12,89 @@
 import csv
 from random import randint
 import getpass
+import hashlib
 
-class User:
+
+#############################################################################################################################################################
+class Csv:
     def __init__(self):
         self.accounts =[]
-        self.password = []
-        self.name = []
         self.account_id = []
-        self.checking_account = []
-        self.savings_account = []
-        self.balance = []
         self.load_csv()
     
     def load_csv(self):
         with open('./../bank.csv', 'r') as file:
-            reader = csv.DictReader(file)
+            reader = csv.reader(file)
             for row in reader:
                 print(row)
                 
                 
     def save_to_csv(self):
         with open('./../bank.csv', 'a', newline='') as file:
-            fieldnames = ['account_id', 'name', 'password', 'checking_account', 'savings_account', 'balance']
-            writer = csv.DictWriter(file, fieldnames=fieldnames)
-            writer.writeheader()
-            for i in self.accounts:
-                writer.writerow(i)
+            writer = csv.writer(file, delimiter=';')
+            for account in self.accounts:
+                writer.writerow([
+                account['account_id'],
+                account['name'],
+                account.get('password'),
+                account.get('checking_account', ''),
+                account.get('savings_account', ''),
+                account.get('balance', '0')
+            ])
         print("Account information saved to CSV.")
     
     def generate_unique_id(self):
         while True:
             new_id = randint(10006, 11000)
             if new_id not in self.account_id:
+                self.account_id.append(new_id)
                 return new_id
+            
+    def hash_password(self, password):
+        return hashlib.sha256(password.encode()).hexdigest()
+#############################################################################################################################################################    
+class User(Csv):
+    def __init__(self):
+        super().__init__()
                  
-    def create_bank_account(self):
-        if input('*** Welcome To ACME Bank *** \nWould you like to create an ACME Bank Account? ').lower() == 'yes':
-            name = input('Please enter a Username: ')
+    def create_bank_account(self, account_type):
+        if input(f'''
+                ----------------------------
+                *** Welcome To ACME Bank ***
+                ----------------------------
+                Would you like to create an ACME {account_type.capitalize()} Account? (yes/no) 
+                ''').lower() == 'yes':
+            name = input(f'Please enter a Username for your {account_type} account: ').strip()
             password = getpass.getpass('Please enter a password: ')
+            password_hash = self.hash_password(password)
             account_id = self.generate_unique_id()
             
-            self.name.append(name)
-            self.password.append(password)
-            self.account_id.append(account_id)
-            self.balance.append(0)
+            self.accounts.append({
+                'account_id': str(account_id),
+                'name': name,
+                'password': password_hash,
+                'account_type': account_type,
+                'balance': '0'
+            })
             
-            print(f"ACME Bank account created successfully. Your Account ID is: {account_id}")
-            # self.save_to_csv()
+            print(f"{account_type} ACME Bank account created successfully. Your Account ID is: {account_id}")
+            self.save_to_csv()
         
         else:
             print('Account Creation Cancelled')
             pass
-    
-    
-    def ckecking_saving_account(self):
-        # Checking Account
-        if input('Would you like to create an ACME Checking Account? ').lower() == 'yes':
-            username = input('Please enter a Username: ').lower()
-            if username not in self.checking_account:
-                password = getpass.getpass('Please enter a Password: ')
-                self.checking_account.append(username)
-                self.password.append(password)
-                print('Checking Account Created Successfully')
-            else:
-                print('This name is already in use')
-        
-        # Savings Account
-        if input('Would you like to create an ACME Savings Account? ').lower() == 'yes':
-            username = input('Please enter a Username: ').lower()
-            if username not in self.savings_account:
-                password = getpass.getpass('Please enter a Password: ')
-                self.savings_account.append(username)
-                self.password.append(password)
-                print('Savings Account Created Successfully')
-            else:
-                print('This name is already in use')
-                
-        # self.save_to_csv()
-        return self.checking_account, self.savings_account, self.password
-    
-    
-        
- 
- 
-
-class login(User):
+############################################################################################################################################################# 
+class Login(User):
     def __init__(self):
         super().__init__()
         
     
-    def authenticate(self, active_type, account_id, password):
-        if active_type == 'checking':
-            return self.checking_account.get(account_id) ==  password
-        elif active_type == 'savings':
-            return self.savings_account.get(account_id) == password
-        return False
+    def authenticate(self, account_id, password):
+        password_hash = self.hash_password(password)
+        for account in self.accounts:
+            if account['account_id'] == account_id and account['password'] == password_hash:
+                return account
+        return None
     
     
     def prompt_login(self, account_type):
@@ -122,15 +110,28 @@ class login(User):
     def log_in(self):
         self.prompt_login('checking')
         self.prompt_login('savings')
-        
-        return self.checking_account, self.savings_account
+#############################################################################################################################################################
+class BankSystem:
+    def __init__(self):
+        self.user = User()
+        self.login = Login()
     
-User().create_bank_account()
-User().ckecking_saving_account()
-login().log_in()
+    def log_reg(self):
+        while True:
+            response = input('*** Welcome To ACME Bank *** \nWould you like to Login or Register? ').strip().lower()
+            if response == 'login':
+                self.login.log_in()
+            elif response == 'register':
+                self.user.create_bank_account('checking')
+                self.user.create_bank_account('savings')
+            elif response == 'exit':
+                print('Goodbye!')
+                break
+            else:
+                print('Invalid response. Please try again.')
 
-
-
+BankSystem().log_reg()
+#############################################################################################################################################################
 # class Withdraw(login):
 #     def __init__(self, account_id, name = [],cheacking_account = [], savings_account = [], balance = 0, check_password = [], save_password = []):
 #         super().__init__(account_id, name, cheacking_account, savings_account, balance, check_password, save_password)

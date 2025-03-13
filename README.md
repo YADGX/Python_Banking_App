@@ -23,9 +23,9 @@ Once the user opens the app he will be asked to either Login, Register or Exit
 - He will be asked from which account he would like to Deposit his money (Either Chacking or Savings account).<br/><br/>
 - Then he will be asked to input the amount of money he would like to Deposit.<br/<br/>
 
-##If he chooses Transfer
+## If he chooses Transfer
 - He would ask to which account he would like to Transfer his money to. (Either Chacking or Savings Account)<br/><br/>
 - Then he will be asked to input the amount of money he would like to Transfer.<br/><br/>
 
-##If the user chooses Exit##
-The App will end and he will be kicked out.
+## If the user chooses Exit##
+The App will end and he will be kicked out.<br/><br/>

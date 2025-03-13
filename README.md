@@ -15,9 +15,9 @@ Once the user opens the app he will be asked to either Login, Register or Exit
 - The app will ask him to enter his Account ID and his/her Password (The password will be hidden due to the use of **getpass** function) <br/><br/>
 - Once he logs in he will have the choice of either withdrawing, Deposit, Transfer or Exit. <br/><br/>
   
-# If the user chooses to  Withdraw
-1- He will be asked from which account he would like to Withdraw his money. (Either Chacking or Savings Account)
-2- Then he will be asked to enter the amount of money he would like to withdraw and it must be available in his balance.
+## If the user chooses to  Withdraw
+- He will be asked from which account he would like to Withdraw his money. (Either Checking or Savings Account)<br/><br/>
+- Then he will be asked to enter the amount of money he would like to withdraw and it must be available in his balance.<br/><br/>
 
 ## If he chooses Deposit
 1- He will be asked from which account he would like to Deposit his money (Either Chacking or Savings Accoount).

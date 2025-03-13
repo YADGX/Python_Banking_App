@@ -1,6 +1,5 @@
-<div>
+
 # Python Banking App 
-</div>
 **This** app allows the user to either Create or to Login to his/her Bank Account with either a Checking or a Savings Account or both.
 This app is fully functional and provides a simple Bank Account System.
 

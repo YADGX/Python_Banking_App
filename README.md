@@ -5,7 +5,7 @@
 **ACME**  Banking App allows the user to either Create or to Login to his/her Bank Account with either a Checking or a Savings Account or both.
 This app is fully functional and provides a simple Bank Account System. which allows the user to manage their Bank Account, Users can perform transactions such as deposits, withdrawals, and transfers between checking and savings accounts.
 
-## Used Technollogies
+## Used Technologies
 - Python
 - CSV
 - 'getpass' to hide the password input
@@ -37,12 +37,28 @@ This app is fully functional and provides a simple Bank Account System. which al
 - Then he will be asked to enter the amount of money he would like to withdraw and it must be available in his balance.<br/><br/>
 
 ### If he chooses Deposit
-- He will be asked from which account he would like to Deposit his money (Either Chacking or Savings account).<br/><br/>
+- He will be asked from which account he would like to Deposit his money (Either Checking or Savings account).<br/><br/>
 - Then he will be asked to input the amount of money he would like to Deposit.<br/<br/>
 
-### If he chooses Transfer
-- He would ask to which account he would like to Transfer his money to. (Either Chacking or Savings Account)<br/><br/>
+### If he chooses to Transfer
+- He would ask to which account he would like to Transfer his money to. (Either Checking or Savings Account)<br/><br/>
 - Then he will be asked to input the amount of money he would like to Transfer.<br/><br/>
 
 ### If the user chooses Exit
 - The App will end and he will be kicked out.<br/><br/>
+
+## Challenges & Sulotions
+
+### Challenges
+- Make the CSV auto-update after a user input.
+- Matching the user with his/her password.
+- how to create the Overdraft function. (I gave up ;p)
+- how to generate a unique ID.
+- how to ensure account names are unique
+
+### Solutions
+- Created a ***save_to_csv** function.
+- Created a ***authenticate** function to ensure they are matching.
+- Created a ***unique_id*** to generate a unique ID between 10006 and 11000.
+- Created a ***for loop*** to iterate through the acc['name'] and if there is it will break the loop. 
+

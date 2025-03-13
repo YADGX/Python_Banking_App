@@ -9,7 +9,7 @@ Once the user opens the app he will be asked to either Login, Register or Exit
 - He/She will be asked to enter a unique Username with a password. <br/><br/>
 - Once he/she enters the Username and Password it will be automatically stored in the CVS file. <br/><br/>
 - Then he/she will be asked if he/she wants to open a Checking Account, a Savings Account, or both. <br/><br/>
-- Once they are finished the system will output **Account information saved to CSV.** and **Bank account(s) created successfully. Your Account ID is: ID**  which they will need when they Login. <br/><be/>
+- Once they are finished the system will output ***Account information saved to CSV.*** and ***Bank account(s) created successfully. Your Account ID is: ID***  which they will need when they Login. <br/><be/>
 
 ## If the user chooses to Login
 1- The app will ask him to enter his Account ID and his/her Password (The password will be hidden due to the use of 'getpass' function)

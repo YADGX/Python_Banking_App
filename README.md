@@ -13,10 +13,13 @@ This app is fully functional and provides a simple Bank Account System. which al
 - 'random' to generate a random Account ID
 
 ## APP Functionality
-| Feuture           | Description |
-------------------------------------
-| **Register**       | User can create an account with a username and a password |
---------------------------------------------------------------------------------
+| Feature                | Description |
+|------------------------|-------------|
+| **Registration**  | Users can create an account with a username and password. |
+| **Secure Password** | User passwords are hashed and verified upon login. |
+| **Checking & Savings Accounts** | Users can maintain both checking and savings accounts. |
+| **Deposits & Withdrawals** | Users can deposit into or withdraw from their accounts. |
+| **Transfers** | Users can transfer money between their checking and savings accounts. |
 
 ### If the user chooses to Register
 - He/She will be asked to enter a unique Username with a password. <br/><br/>

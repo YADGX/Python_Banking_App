@@ -21,6 +21,7 @@ This app is fully functional and provides a simple Bank Account System. which al
 | **Deposits & Withdrawals** | Users can deposit into or withdraw from their accounts. |
 | **Transfers** | Users can transfer money between their checking and savings accounts. |
 
+## System Procces
 ### If the user chooses to Register
 - He/She will be asked to enter a unique Username with a password. <br/><br/>
 - Once he/she enters the Username and Password it will be automatically stored in the CVS file. <br/><br/>

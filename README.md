@@ -13,7 +13,8 @@ This app is fully functional and provides a simple Bank Account System. which al
 - 'random' to generate a random Account ID
 
 ## APP Functionality
-**Once** the user opens the app he will be asked to either Login, Register or Exit
+| Feuture           | Description |
+------------------------------------
 
 ### If the user chooses to Register
 - He/She will be asked to enter a unique Username with a password. <br/><br/>

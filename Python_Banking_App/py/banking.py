@@ -1,93 +1,103 @@
-#   PSEUDOCODE HERE
-# - 
-# -
-# -
-# -
-# -
-# -
-# -
-
-
-
 import csv
 from random import randint
 import getpass
 import hashlib
 
-
-#############################################################################################################################################################
+############################################################################################
 class Csv:
+    
     def __init__(self):
-        self.accounts =[]
-        self.account_id = []
+        self.accounts = []
         self.load_csv()
-    
+
     def load_csv(self):
-        with open('./../bank.csv', 'r') as file:
-            reader = csv.reader(file)
-            for row in reader:
-                print(row)
-                
-                
+        try:
+            with open('./../bank.csv', 'r') as file:
+                reader = csv.reader(file, delimiter=';')
+                for row in reader:
+                    if len(row) >= 6: # ensure all columns are present
+                        try:
+                            self.accounts.append({
+                                'account_id': row[0],
+                                'name': row[1],
+                                'password': row[3], # used 3 becuase 2 didn't work for some reason  :}
+                                'checking_account': int(row[4]) if row[4] else 0, # if row[4] is empty, set to 0
+                                'savings_account': int(row[5]) if row[5] else 0 # if row[5] is empty, set to 0
+                            })
+                        except ValueError:
+                            print(f"Skipping invalid row: {row}")
+        except FileNotFoundError:
+            pass  # Ignore if the file does not exist
+
     def save_to_csv(self):
-        with open('./../bank.csv', 'a', newline='') as file:
-            writer = csv.writer(file, delimiter=';')
-            for account in self.accounts:
+        with open('./../bank.csv', 'w', newline='') as file:
+            writer = csv.writer(file, delimiter=';') # used ' ; ' to separate the columns
+            for acc in self.accounts:
                 writer.writerow([
-                account['account_id'],
-                account['name'],
-                account.get('password'),
-                account.get('checking_account', ''),
-                account.get('savings_account', ''),
-                account.get('balance', '0')
-            ])
+                    acc['account_id'],
+                    acc['name'],
+                    '',  # Placeholder for missing column
+                    acc['password'],
+                    acc['checking_account'],
+                    acc['savings_account']
+                ])
         print("Account information saved to CSV.")
-    
+
     def generate_unique_id(self):
+        existing_ids = {acc['account_id'] for acc in self.accounts} # iterate over the accounts and get the account_id
         while True:
-            new_id = randint(10006, 11000)
-            if new_id not in self.account_id:
-                self.account_id.append(new_id)
+            new_id = str(randint(10006, 11000))
+            if new_id not in existing_ids:
                 return new_id
-            
-    def hash_password(self, password):
+
+    def hash_password(self, password): # encode and decode the password, got it from discuss.python.org
         return hashlib.sha256(password.encode()).hexdigest()
-#############################################################################################################################################################    
+############################################################################################
 class User(Csv):
-    def __init__(self):
-        super().__init__()
-                 
-    def create_bank_account(self, account_type):
-        if input(f'''
-                ----------------------------
-                *** Welcome To ACME Bank ***
-                ----------------------------
-                Would you like to create an ACME {account_type.capitalize()} Account? (yes/no) 
-                ''').lower() == 'yes':
-            name = input(f'Please enter a Username for your {account_type} account: ').strip()
-            password = getpass.getpass('Please enter a password: ')
-            password_hash = self.hash_password(password)
+    
+    def create_bank_account(self):
+        name = input('Please enter a Username: ').strip()
+        password = getpass.getpass('Please enter a password: ')
+        password_hash = self.hash_password(password)
+        
+        existing_account = None
+        for acc in self.accounts:
+            if acc['name'] == name:
+                existing_account = acc
+                break  
+
+        if existing_account:
+            print("An account with this name already exists.")
+            account_id = existing_account['account_id']
+        else:
             account_id = self.generate_unique_id()
-            
             self.accounts.append({
-                'account_id': str(account_id),
+                'account_id': account_id,
                 'name': name,
                 'password': password_hash,
-                'account_type': account_type,
-                'balance': '0'
+                'checking_account': 0,
+                'savings_account': 0
             })
-            
-            print(f"{account_type} ACME Bank account created successfully. Your Account ID is: {account_id}")
-            self.save_to_csv()
+
+        while True:
+            account_type = input("Would you like to add a Checking or Savings account? (Checking/Savings/Done): ").strip().lower()
+            if account_type in ('checking', 'savings'):
+                for acc in self.accounts:
+                    if acc['account_id'] == account_id:
+                        if account_type == 'checking' and acc['checking_account'] == 0:
+                            acc['checking_account'] = 0
+                        if account_type == 'savings' and acc['savings_account'] == 0:
+                            acc['savings_account'] = 0
+                        break
+            elif account_type == 'done':
+                break
+            else:
+                print("Invalid choice, try again.")
         
-        else:
-            print('Account Creation Cancelled')
-            pass
-############################################################################################################################################################# 
+        self.save_to_csv()
+        print(f"Bank account(s) created successfully. Your Account ID is: {account_id}")
+##########################################################################################
 class Login(User):
-    def __init__(self):
-        super().__init__()
-        
     
     def authenticate(self, account_id, password):
         password_hash = self.hash_password(password)
@@ -95,102 +105,131 @@ class Login(User):
             if account['account_id'] == account_id and account['password'] == password_hash:
                 return account
         return None
-    
-    
-    def prompt_login(self, account_type):
-        response = input(f'Would you like to login to your {account_type.capitalize()} Account? (yes/no)').strip().lower()
-        if response == 'yes':
-            account_id = input('Please enter your Account ID: ').strip()
-            password = getpass.getpass('Please enter your Password: ')
-            if self.authenticate(account_type, account_id, password):
-                print(f'You are now logged in to your {account_type.capitalize()} Account')
-            else:
-                print('Invalid Account ID or Password')
-    
+
     def log_in(self):
-        self.prompt_login('checking')
-        self.prompt_login('savings')
-#############################################################################################################################################################
+        account_id = input('Please enter your Account ID: ').strip()
+        password = getpass.getpass('Please enter your Password: ')
+        return self.authenticate(account_id, password)
+###########################################################################################
+class Transactions(Login):
+    
+    def perform_action(self, account):
+        while True:
+            action = input('Would you like to Withdraw, Deposit, Transfer, or Exit? ').strip().lower()
+            if action == 'withdraw':
+                self.withdraw_money(account)
+            elif action == 'deposit':
+                self.deposit_money(account)
+            elif action == 'transfer':
+                self.transfer_money(account)
+            elif action == 'exit':
+                break
+            else:
+                print('Invalid action. Please try again.')
+
+    def withdraw_money(self, account):
+        inp = input('From which account would you like to withdraw money? (checking/savings) ').strip().lower()
+        try:
+            amount = int(input('How much would you like to withdraw? '))
+            if amount <= 0:
+                print("Amount must be positive.")
+                return
+        except ValueError:
+            print("Invalid input. Please enter a numeric value.")
+            return
+
+        if inp == 'checking' and account['checking_account'] >= amount:
+            account['checking_account'] -= amount
+        elif inp == 'savings' and account['savings_account'] >= amount:
+            account['savings_account'] -= amount
+        else:
+            print("Insufficient funds or invalid account type.")
+            return
+
+        self.save_to_csv()
+        print(f"Withdrawal successful. Updated balances - Checking: {account['checking_account']}, Savings: {account['savings_account']}")
+
+    def deposit_money(self, account):
+        inp = input('Which account would you like to deposit into? (checking/savings) ').strip().lower()
+        try:
+            amount = int(input('How much would you like to deposit? '))
+            if amount <= 0:
+                print("Amount must be positive.")
+                return
+        except ValueError:
+            print("Invalid input. Please enter a numeric value.")
+            return
+
+        if inp == 'checking':
+            account['checking_account'] += amount
+        elif inp == 'savings':
+            account['savings_account'] += amount
+        else:
+            print("Invalid account type.")
+            return
+
+        self.save_to_csv()
+        print(f"Deposit successful. Updated balances - Checking: {account['checking_account']}, Savings: {account['savings_account']}")
+
+    def transfer_money(self, account):
+        inp = input('What account would you like to transfer to? (checking/savings) ').strip().lower()
+        try:
+            amount = int(input('How much would you like to transfer? '))
+            if amount <= 0:
+                print("Amount must be positive.")
+                return
+        except ValueError:
+            print("Invalid input. Please enter a numeric value.")
+            return
+
+        if inp == 'checking' and account['savings_account'] >= amount:
+            account['savings_account'] -= amount
+            account['checking_account'] += amount
+        elif inp == 'savings' and account['checking_account'] >= amount:
+            account['checking_account'] -= amount
+            account['savings_account'] += amount
+        else:
+            print("Insufficient funds or invalid account type.")
+            return
+
+        self.save_to_csv()
+        print(f"Transfer successful. Updated balances - Checking: {account['checking_account']}, Savings: {account['savings_account']}")
+###########################################################################################
 class BankSystem:
+    
     def __init__(self):
         self.user = User()
-        self.login = Login()
-    
+        self.transactions = Transactions()
+
+    # 1st function to be called
     def log_reg(self):
         while True:
-            response = input('*** Welcome To ACME Bank *** \nWould you like to Login or Register? ').strip().lower()
+            response = input('Would you like to Login, Register, or Exit? ').strip().lower()
             if response == 'login':
-                self.login.log_in()
+                account = Login().log_in()
+                if account:
+                    Transactions().perform_action(account) # called the perform_action function from the Transactions class
+                else:
+                    print("Authentication failed.")
             elif response == 'register':
-                self.user.create_bank_account('checking')
-                self.user.create_bank_account('savings')
+                User().create_bank_account()
             elif response == 'exit':
                 print('Goodbye!')
                 break
             else:
                 print('Invalid response. Please try again.')
 
-BankSystem().log_reg()
-#############################################################################################################################################################
-# class Withdraw(login):
-#     def __init__(self, account_id, name = [],cheacking_account = [], savings_account = [], balance = 0, check_password = [], save_password = []):
-#         super().__init__(account_id, name, cheacking_account, savings_account, balance, check_password, save_password)
-    
-    
-#     def withdraw_money(self):
-#         inp = input('From which account would you like to withdraw money? ').lower()
-#         if inp == 'cheacking account':
-#             super().log_in()
-#             inp2 = input('How much would you like to withdraw? ')
-#             self.balance -= int(inp2)
-#         else:
-#             super().log_in()
-#             inp3 = input('How much would you like to withdraw? ')
-#             self.balance -= int(inp3)
-#         return self.balance
-    
-# Withdraw('name').withdraw_money()
-# Withdraw('name').log_in()
 
-        
-        
+    def overdraft(self, accounts):
+        accounts = self.account
+        while True:
+            if self.transactions['checking_account'] + self.transactions['savings_account'] < 0:
+                self.transactions['checking_account'] - 35 or self.transactions['savings_account'] - 35
+            if self.transactions['checking_account'] + self.transactions['savings_account'] < 0:
+                accounts['withdraw_money'] > 100 = False
+                print("You have an overdraft on your account.")
+                
+            pass
 
-#     def deposit_money(self, balance):
-#         self.balance = balance
-#         inp = input('How much would you like to deposit? ')
-#         self.balance += int(inp)
-#         with open('bank.csv', 'a') as file:
-#             file = csv.writer(file)
-#             file.writerow([self.balance])
-#         return self.balance
-
-
-
-#     def transfer_money(self):
-#         inp = input('How much would you like to transfer? ')
-#         inp2 = input('What account would you like to transfer to? ')
-#         if inp2 == 'cheacking account':
-#             self.cheacking_account += int(inp)
-#         else:
-#             self.savings_account += int(inp)
-#         return self.cheacking_account, self.savings_account
-    
-#     def check_balance(self):
-#         inp = input('What account would you like to check the balance of? ')
-#         if inp == 'cheacking account':
-#             print(self.cheacking_account)
-#         else:
-#             print(self.savings_account)
-        
-       
-
-    
-
-
-#     def overdraft():
-#         pass
-    
-
-# Bank_System('name').add_new_customer()
-# Bank_System('name').withdraw_money(100)
-# Bank_System('name').deposit_money(100)
+if __name__ == '__main__':
+    BankSystem().log_reg()

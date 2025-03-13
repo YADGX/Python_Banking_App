@@ -15,6 +15,8 @@ This app is fully functional and provides a simple Bank Account System. which al
 ## APP Functionality
 | Feuture           | Description |
 ------------------------------------
+| **Register**       | User can create an account with a username and a password |
+--------------------------------------------------------------------------------
 
 ### If the user chooses to Register
 - He/She will be asked to enter a unique Username with a password. <br/><br/>

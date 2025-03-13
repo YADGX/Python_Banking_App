@@ -6,7 +6,7 @@ This app is fully functional and provides a simple Bank Account System.
 Once the user opens the app he will be asked to either Login, Register or Exit
 
 ##If the user chooses to Register##
-1- He/She will be asked to enter a unique Username with a password.
+He/She will be asked to enter a unique Username with a password. <br/><br/>
 2- Once he/she enters the Username and Password it will be automatically stored in the Cvs File.
 3- Then he/she will be asked if he/she wants to open a Checking Account, a Savings Account, or both.
 4- Once they are finished the system will output "Account information saved to CSV." and "Bank account(s) created successfully. Your Account ID is: ID"  which they will be need when they Login.

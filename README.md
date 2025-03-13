@@ -5,7 +5,15 @@
 **ACME**  Banking App allows the user to either Create or to Login to his/her Bank Account with either a Checking or a Savings Account or both.
 This app is fully functional and provides a simple Bank Account System. which allows the user to manage their Bank Account, Users can perform transactions such as deposits, withdrawals, and transfers between checking and savings accounts.
 
-Once the user opens the app he will be asked to either Login, Register or Exit
+## Used Technollogies
+- Python
+- CSV
+- 'getpass' to hide the password input
+- 'hashlib' to encode and decode the password
+- 'random' to generate a random Account ID
+
+## APP Functionality
+**Once** the user opens the app he will be asked to either Login, Register or Exit
 
 ## If the user chooses to Register
 - He/She will be asked to enter a unique Username with a password. <br/><br/>

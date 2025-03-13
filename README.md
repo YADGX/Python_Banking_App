@@ -20,11 +20,12 @@ Once the user opens the app he will be asked to either Login, Register or Exit
 - Then he will be asked to enter the amount of money he would like to withdraw and it must be available in his balance.<br/><br/>
 
 ## If he chooses Deposit
-1- He will be asked from which account he would like to Deposit his money (Either Chacking or Savings Accoount).
-2- Then he will be asked to input the amount of money he would like to Deposit in.
-#If he chooses Transfer#
-1- He woould asked to which account he would like to Transfer his money too. (Either Chacking or Savings Accoount)
-2- Then he will be asked to input the amount of money he would like to Transfer to.
+- He will be asked from which account he would like to Deposit his money (Either Chacking or Savings account).<br/><br/>
+- Then he will be asked to input the amount of money he would like to Deposit.<br/<br/>
+
+##If he chooses Transfer
+- He would ask to which account he would like to Transfer his money to. (Either Chacking or Savings Account)<br/><br/>
+- Then he will be asked to input the amount of money he would like to Transfer.<br/><br/>
 
 ##If the user chooses Exit##
 The App will end and he will be kicked out.

@@ -12,7 +12,7 @@ Once the user opens the app he will be asked to either Login, Register or Exit
 - Once they are finished the system will output ***Account information saved to CSV.*** and ***Bank account(s) created successfully. Your Account ID is: ID***  which they will need when they Login. <br/><be/>
 
 ## If the user chooses to Login
-- The app will ask him to enter his Account ID and his/her Password (The password will be hidden due to the use of 'getpass' function) <br/><br/>
+- The app will ask him to enter his Account ID and his/her Password (The password will be hidden due to the use of **getpass** function) <br/><br/>
 - Once he logs in he will have the choice of either withdrawing, Deposit, Transfer or Exit. <br/><br/>
   
 # If the user chooses to  Withdraw

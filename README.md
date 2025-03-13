@@ -60,5 +60,10 @@ This app is fully functional and provides a simple Bank Account System. which al
 - Created a ***save_to_csv** function.
 - Created a ***authenticate** function to ensure they are matching.
 - Created a ***unique_id*** to generate a unique ID between 10006 and 11000.
-- Created a ***for loop*** to iterate through the acc['name'] and if there is it will break the loop. 
+- Created a ***for loop*** to iterate through the acc['name'] and if there is it will break the loop.
+
+## Icebox Features (Future Enhancements)
+- Add overdraft function
+- allows to transfer to other user accounts
+- add transaction history logging
 

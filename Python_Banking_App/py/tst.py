@@ -93,7 +93,7 @@ class Transactions(User):
             print("You can only withdraw up to $100 at a time.")
             return
         
-        if account_type == 'checking': 
+        if account_type == 'checking': # ensure the user can't withdraw more than $100 when balance is negative
             if account['checking_account'] < 0 and amount > 100:
                 print("Cannot withdraw more than $100 when balance is negative.")
                 return
@@ -254,14 +254,14 @@ Would you like to Login, Register, or Exit?
                 if account:
                     print("Login successful.")
                     while True:
-                        task = input("Would you like to Withdraw, Deposit, Transfer or to Exit? ").strip().lower()
+                        task = input("Would you like to Withdraw, Deposit, Transfer, Logout? ").strip().lower()
                         if task == 'withdraw':
                             self.transactions.withdraw_money(account)
                         elif task == 'deposit':
                             self.transactions.deposit_money(account)
                         elif task == 'transfer':
                             self.transactions.transfer_money(account)
-                        elif task == 'exit':
+                        elif task == 'logout':
                             break
                         else:
                             print("Invalid option.")

@@ -58,22 +58,82 @@ class Csv:
 class User(Csv):
     
     def create_bank_account(self):
-        name = input('Enter a username: ').strip()
-        password = getpass.getpass('Enter a password: ')
-        password_hash = self.hash_password(password)
-        account_id = self.generate_unique_id()
+        inp = input('Would you like to create a new Bank Account? (Yes/No) ').strip().lower()
+        if inp == 'yes':
+            inp2 = input('Would you like to create a Checking or Savings Account or Both? ').strip().lower()
+            if inp2 == 'checking':
+                inp3 = input('Enter a username: ').strip()
+                inp4 = getpass.getpass('Enter a password: ')
+                inp5 = self.hash_password(inp4)
+                inp6 = self.generate_unique_id()
+                self.accounts.append({
+                    'account_id': inp6,
+                    'name': inp3,
+                    'password': inp5,
+                    'checking_account': 0,
+                    'savings_account': '',
+                    'overdraft_count': 0,
+                    'active': True
+                })
+            
+                self.save_to_csv()
+                print(f"ACEM Checking Bank Account(s) created successfully. Your Account ID is: {inp6}")
         
-        self.accounts.append({
-            'account_id': account_id,
-            'name': name,
-            'password': password_hash,
-            'checking_account': 0, # set the default value to 0
-            'savings_account': 0, # set the default value to 0
-            'overdraft_count': 0, # set the default value to 0
-            'active': True # set the default value to True
-        })
-        self.save_to_csv()
-        print(f"ACEM Bank Account(s) created successfully. Your Account ID is: {account_id}")
+            elif inp2 == 'savings':
+                inp3 = input('Enter a username: ').strip()
+                inp4 = getpass.getpass('Enter a password: ')
+                inp5 = self.hash_password(inp4)
+                inp6 = self.generate_unique_id()
+                self.accounts.append({
+                    'account_id': inp6,
+                    'name': inp3,
+                    'password': inp5,
+                    'checking_account': '',
+                    'savings_account': 0,
+                    'overdraft_count': 0,
+                    'active': True
+                })
+                
+                self.save_to_csv()
+                print(f"ACEM Savings Bank Account(s) created successfully. Your Account ID is: {inp6}")
+            
+            elif inp2 == 'both':
+                inp3 = input('Enter a username: ').strip()
+                inp4 = getpass.getpass('Enter a password: ')
+                inp5 = self.hash_password(inp4)
+                inp6 = self.generate_unique_id()
+                self.accounts.append({
+                    'account_id': inp6,
+                    'name': inp3,
+                    'password': inp5,
+                    'checking_account': 0,
+                    'savings_account': 0,
+                    'overdraft_count': 0,
+                    'active': True
+                })
+                
+                self.save_to_csv()
+                print(f"ACEM Bank Account(s) created successfully. Your Account ID is: {inp6}")
+#################################################################################################################################################
+            
+        #         self.save_to_csv()
+        #         print(f"ACEM Savings Bank Account(s) created successfully. Your Account ID is: {inp6}")
+        # name = input('Enter a username: ').strip()
+        # password = getpass.getpass('Enter a password: ')
+        # password_hash = self.hash_password(password)
+        # account_id = self.generate_unique_id()
+        
+        # self.accounts.append({
+        #     'account_id': account_id,
+        #     'name': name,
+        #     'password': password_hash,
+        #     'checking_account': 0, # set the default value to 0
+        #     'savings_account': 0, # set the default value to 0
+        #     'overdraft_count': 0, # set the default value to 0
+        #     'active': True # set the default value to True
+        # })
+        # self.save_to_csv()
+        # print(f"ACEM Bank Account(s) created successfully. Your Account ID is: {account_id}")
 #################################################################################################################################################
 class Transactions(User):
     
